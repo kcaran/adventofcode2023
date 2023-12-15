@@ -135,6 +135,26 @@ sub start {
   return;
  }
 
+sub next_flows {
+  my ($self, $row, $col) = @_;
+
+  my $m = $self->{ map };
+  my @flows;
+  if (($m->[$row - 1][$col] eq '.')
+   || ($m->[$row - 1][$col] eq '7' && $m->[$row - 1][$col + 1] eq 'F')
+   || ($m->[$row - 1][$col] eq 'F' && $m->[$row - 1][$col - 1 ] eq '7')
+   || ($m->[$row - 1][$col] eq '|' && $m->[$row - 1][$col - 1 ] eq '|')
+   || ($m->[$row - 1][$col] eq '|' && $m->[$row - 1][$col + 1 ] eq '|')
+      ) {
+    push @flows, [ $row - 1, $col ];
+   }
+  if (($m->[$row + 1][$col] eq '.')
+   || ($m->[$row + 1][$col] eq '7' && $m->[$row - 1][$col + 1] eq 'F')
+   || ($m->[$row + 1][$col] eq 'F' && $m->[$row - 1][$col - 1 ] eq '7')) {
+    push @flows, [ $row + 1, $col ];
+   }
+ }
+
 sub is_enclosed {
   my ($self, $row, $col) = @_;
 
